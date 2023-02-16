@@ -15,10 +15,14 @@ func NewRouter(c *controller.Controller) *echo.Echo {
 	router.Use(middleware.Recover())
 
 	router.GET("/swagger/*", echoSwagger.WrapHandler)
+	router.POST("/is-contain-letters", c.ContainLettersHandler)
 
-	router.POST("/football/recordgame", c.RecordGameHandler)
-	router.GET("/football/leaguestanding", c.AllLeagueStandingsHandler)
-	router.GET("/football/rank", c.ClubStandingsHandler)
+	football := router.Group("/football")
+
+	football.POST("/recordgame", c.RecordGameHandler)
+	football.GET("/leaguestanding", c.AllLeagueStandingsHandler)
+	football.GET("/rank", c.ClubStandingsHandler)
+
 
 	return router
 }

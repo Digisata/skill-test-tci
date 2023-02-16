@@ -8,12 +8,15 @@ import (
 
 	"github.com/Digisata/skill-test-tci/app"
 	"github.com/Digisata/skill-test-tci/controller"
+	"github.com/Digisata/skill-test-tci/docs"
 	"github.com/go-playground/validator/v10"
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/joho/godotenv"
-	"github.com/swaggo/swag/example/basic/docs"
 )
 
+// @title           API Specification
+// @description     The purpose of this application is to provide an API for football league management.
+// @termsOfService  http://swagger.io/terms/
 func main() {
 	host := os.Getenv("HOST")
 	port := os.Getenv("PORT")

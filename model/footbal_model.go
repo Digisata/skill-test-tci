@@ -8,7 +8,7 @@ type Club struct {
 }
 
 type RecordGameRequest struct {
-	ClubHomeName string `validate:"required" json:"clubhomename"`
-	ClubAwayName string `validate:"required" json:"clubawayname"`
-	Score        string `validate:"required" json:"score"`
+	ClubHomeName string `validate:"required" json:"clubhomename" example:"Chelsea"`
+	ClubAwayName string `validate:"required" json:"clubawayname" example:"Man Utd"`
+	Score        string `validate:"required" json:"score" example:"1 : 2"`
 }

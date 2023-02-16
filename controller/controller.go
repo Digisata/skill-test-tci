@@ -28,7 +28,7 @@ func NewController(validate *validator.Validate, db *sql.DB) *Controller {
 // @ID record-game-handler
 // @Accept json
 // @Produce json
-// @Param RecordGameRequest body model.RecordGameRequest true "Record Game"
+// @Param RecordGameRequest body []model.RecordGameRequest true "Record Game"
 // @Success 200 {object} model.SuccessResult
 // @Failure 400 {object} model.BadRequestResult
 // @Failure 500 {object} model.InternalServerErrorResult
@@ -81,11 +81,13 @@ func (ctr *Controller) RecordGameHandler(c echo.Context) error {
 	}
 
 	return helper.SuccessResponse(c, "Success")
-
 }
 
 // AllLeagueStandingsHandler godoc
 // @ID all-league-standings-handler
+// @Summary All league standings
+// @Description get league standings
+// @Accept json
 // @Produce json
 // @Success 200 {object} model.SuccessResult
 // @Failure 400 {object} model.BadRequestResult
@@ -115,7 +117,11 @@ func (ctr *Controller) AllLeagueStandingsHandler(c echo.Context) error {
 
 // ClubStandingsHandler godoc
 // @ID club-standings-handler
+// @Summary Club standings
+// @Description get club by name
+// @Accept json
 // @Produce json
+// @Param clubname query string true "club search by clubname"
 // @Success 200 {object} model.SuccessResult
 // @Failure 400 {object} model.BadRequestResult
 // @Failure 404 {object} model.NotFoundResult
@@ -147,4 +153,33 @@ func (ctr *Controller) ClubStandingsHandler(c echo.Context) error {
 	response := []model.Club{{ClubName: club.ClubName, Standing: standing}}
 
 	return helper.SuccessResponse(c, response)
+}
+
+// ContainLettersHandler godoc
+// @ID contain-letters-handler
+// @Accept json
+// @Produce json
+// @Param ContainLettersRequest body model.ContainLettersRequest true "Contain Letters"
+// @Success 200 {object} model.SuccessResult
+// @Failure 400 {object} model.BadRequestResult
+// @Failure 500 {object} model.InternalServerErrorResult
+// @Router /is-contain-letters [post]
+func (ctr *Controller) ContainLettersHandler(c echo.Context) error {
+	requestBody := &model.ContainLettersRequest{}
+	if err := c.Bind(requestBody); err != nil {
+		return helper.FailResponse(c, http.StatusBadRequest)
+	}
+
+	err := ctr.Validate.Struct(requestBody)
+	if err != nil {
+		return helper.FailResponse(c, http.StatusBadRequest)
+	}
+
+	for _, letter := range requestBody.FirstWord {
+		if !strings.Contains(strings.ToLower(requestBody.SecondWord), strings.ToLower(string(letter))) {
+			return helper.SuccessResponse(c, false)
+		}
+	}
+
+	return helper.SuccessResponse(c, true)
 }
