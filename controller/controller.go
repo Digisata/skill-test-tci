@@ -2,6 +2,7 @@ package controller
 
 import (
 	"database/sql"
+	"fmt"
 	"net/http"
 	"strconv"
 	"strings"
@@ -31,6 +32,7 @@ func NewController(validate *validator.Validate, db *sql.DB) *Controller {
 // @Param RecordGameRequest body []model.RecordGameRequest true "Record Game"
 // @Success 200 {object} model.SuccessResult
 // @Failure 400 {object} model.BadRequestResult
+// @Failure 404 {object} model.NotFoundResult
 // @Failure 500 {object} model.InternalServerErrorResult
 // @Router /football/recordgame [post]
 func (ctr *Controller) RecordGameHandler(c echo.Context) error {
@@ -67,6 +69,22 @@ func (ctr *Controller) RecordGameHandler(c echo.Context) error {
 			pointsAway = 1
 		} else {
 			pointsAway = 3
+		}
+
+		stmt := fmt.Sprintf("SELECT * FROM football WHERE clubname IN ('%s','%s')", game.ClubHomeName, game.ClubAwayName)
+		rows, err := ctr.DB.Query(stmt)
+		if err != nil {
+			return helper.FailResponse(c, http.StatusInternalServerError)
+		}
+		defer rows.Close()
+
+		counter := 0
+		for rows.Next() {
+			counter++
+		}
+
+		if counter != 2 {
+			return helper.FailResponse(c, http.StatusNotFound)
 		}
 
 		_, err = ctr.DB.Exec("UPDATE football SET points = points + ? WHERE clubname = ?", pointsHome, game.ClubHomeName)
