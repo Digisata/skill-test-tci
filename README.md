@@ -1,4 +1,4 @@
-# Digiutilsapi
+# Football Standings
 >
 > A simple RESTFUL API that provides endpoints to manage football leagues.
 
