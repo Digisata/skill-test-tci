@@ -1,0 +1,5 @@
+CREATE TABLE football (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    clubname VARCHAR(255) NOT NULL,
+    points INT NOT NULL DEFAULT 0
+)ENGINE = InnoDB;
