@@ -173,6 +173,79 @@ func (ctr *Controller) ClubStandingsHandler(c echo.Context) error {
 	return helper.SuccessResponse(c, response)
 }
 
+// GetCarsHandler godoc
+// @ID get-cars-handler
+// @Summary Get cars
+// @Description get cars with the corresponding type
+// @Accept json
+// @Produce json
+// @Success 200 {object} model.SuccessResult
+// @Failure 500 {object} model.InternalServerErrorResult
+// @Router /cars [get]
+func (ctr *Controller) GetCarsHandler(c echo.Context) error {
+	rows, err := ctr.DB.Query(`
+		SELECT
+		brand,
+		MAX(CASE WHEN row_num = 1 THEN CONCAT(type, ' : ', price) END) AS TYPE1,
+		MAX(CASE WHEN row_num = 2 THEN CONCAT(type, ' : ', price) END) AS TYPE2,
+		MAX(CASE WHEN row_num = 3 THEN CONCAT(type, ' : ', price) END) AS TYPE3
+		FROM (
+		SELECT 
+			brand,
+			type,
+			price,
+			@row_num := IF(@current_brand = brand, @row_num + 1, 1) AS row_num,
+			@current_brand := brand
+		FROM 
+			cars
+			CROSS JOIN (SELECT @current_brand := '', @row_num := 0) AS vars
+		ORDER BY 
+			brand, price DESC
+		) AS ranked_cars
+		WHERE row_num <= 3
+		GROUP BY brand
+		ORDER BY brand;
+	`)
+
+	if err != nil {
+		return helper.FailResponse(c, http.StatusInternalServerError)
+	}
+
+	columns, _ := rows.Columns()
+	count := len(columns)
+	values := make([]interface{}, count)
+	valuePtrs := make([]interface{}, count)
+	cars := []map[string]interface{}{}
+
+	for rows.Next() {
+		for i := range columns {
+			valuePtrs[i] = &values[i]
+		}
+
+		rows.Scan(valuePtrs...)
+
+		car := make(map[string]interface{})
+		
+		for i, col := range columns {
+			val := values[i]
+
+			b, ok := val.([]byte)
+			var v interface{}
+			if ok {
+				v = string(b)
+			} else {
+				v = val
+			}
+
+			car[col] = v
+		}
+
+		cars = append(cars, car)
+	}
+
+	return helper.SuccessResponse(c, cars)
+}
+
 // ContainLettersHandler godoc
 // @ID contain-letters-handler
 // @Accept json
