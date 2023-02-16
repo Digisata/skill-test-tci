@@ -14,7 +14,7 @@
 
 - Clone this repository.
 - Rename [.env.example](.env.example) file to `.env` and change the `variable value` with your desired value.
-- Next, run below command to migrate the database.
+- Next, run the below command to migrate the database schema.
 
 ```shell
 migrate -database "mysql://root:{YOUR_MYSQL_PASSWORD}@tcp(localhost:{YOUR_PORT})/{YOUR_DB_NAME}" -path db/migrations up 
