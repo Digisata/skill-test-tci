@@ -1,10 +1,10 @@
 package app
 
 import (
-	"github.com/Digisata/skill_test_tci/controller"
+	"github.com/Digisata/skill-test-tci/controller"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
-	"github.com/swaggo/echo-swagger"
+	echoSwagger "github.com/swaggo/echo-swagger"
 )
 
 func NewRouter(c *controller.Controller) *echo.Echo {

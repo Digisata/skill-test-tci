@@ -6,8 +6,8 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/Digisata/skill_test_tci/helper"
-	"github.com/Digisata/skill_test_tci/model"
+	"github.com/Digisata/skill-test-tci/helper"
+	"github.com/Digisata/skill-test-tci/model"
 	"github.com/go-playground/validator/v10"
 	"github.com/labstack/echo/v4"
 )
@@ -134,7 +134,7 @@ func (ctr *Controller) ClubStandingsHandler(c echo.Context) error {
 		if err == sql.ErrNoRows {
 			return helper.FailResponse(c, http.StatusNotFound)
 		}
-		
+
 		return helper.FailResponse(c, http.StatusInternalServerError)
 	}
 

@@ -1,10 +1,8 @@
-module github.com/Digisata/skill_test_tci
+module github.com/Digisata/skill-test-tci
 
 go 1.19
 
 require (
-	github.com/Digisata/digiutils v1.0.2
-	github.com/go-playground/validator v9.31.0+incompatible
 	github.com/go-playground/validator/v10 v10.11.2
 	github.com/go-sql-driver/mysql v1.7.0
 	github.com/joho/godotenv v1.5.1
@@ -39,6 +37,5 @@ require (
 	golang.org/x/text v0.6.0 // indirect
 	golang.org/x/time v0.2.0 // indirect
 	golang.org/x/tools v0.1.12 // indirect
-	gopkg.in/go-playground/assert.v1 v1.2.1 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 )

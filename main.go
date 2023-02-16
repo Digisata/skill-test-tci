@@ -6,8 +6,8 @@ import (
 	"log"
 	"os"
 
-	"github.com/Digisata/skill_test_tci/app"
-	"github.com/Digisata/skill_test_tci/controller"
+	"github.com/Digisata/skill-test-tci/app"
+	"github.com/Digisata/skill-test-tci/controller"
 	"github.com/go-playground/validator/v10"
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/joho/godotenv"

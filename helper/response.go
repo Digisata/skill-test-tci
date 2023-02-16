@@ -3,7 +3,7 @@ package helper
 import (
 	"net/http"
 
-	"github.com/Digisata/skill_test_tci/model"
+	"github.com/Digisata/skill-test-tci/model"
 	"github.com/labstack/echo/v4"
 )
 
